@@ -1,8 +1,20 @@
+# Python cache
 __pycache__/
 *.pyc
-.env
-.ipynb_checkpoints/
-data/raw/*
-data/processed/*
-logs/*
 
+# Environment files
+.env
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Data folders (ignore all files but keep folder structure)
+data/raw/*
+!data/raw/.gitkeep
+
+data/processed/*
+!data/processed/.gitkeep
+
+# Logs folder (ignore all files but keep folder structure)
+logs/*
+!logs/.gitkeep
