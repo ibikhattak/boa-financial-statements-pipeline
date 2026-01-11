@@ -1,0 +1,46 @@
+Data Steward Comment for high invalids 
+in (hacReductionParticipantIndicator, supplementalWageIndex, countyCode, bedSize, and vbpAdjustment) 
+
+UPDATE dq_rule_summary
+SET data_steward_comment = 
+'The rule requires this field to contain either Y or N after trimming. However, approximately 29,888 records have this field blank or not populated. Requesting clarification from the source system on whether this field is expected to be populated, and if not, the business rationale for leaving it empty. Depending on the response, the rule may need to be refined or the upstream process corrected.'
+WHERE field_name = 'hacReductionParticipantIndicator';
+
+
+UPDATE dq_rule_summary
+SET data_steward_comment = 
+'CMS documentation states that supplementalWageIndex is only required when supplementalWageIndexIndicator is 1, 2, or 3. A blank indicator means the index does not apply. Current rule incorrectly enforces numeric validation even when the indicator is blank, causing 21,361 false failures. Rule needs refinement to apply conditionally based on the indicator.'
+WHERE field_name = 'supplementalWageIndex';
+
+UPDATE dq_rule_summary
+SET data_steward_comment = 
+'The rule requires countyCode to be a 5‑digit numeric value. In this run, 2,051 records contain NULL values and 15,302 records contain blank values, resulting in 17,353 total invalid entries. This indicates that countyCode is not being consistently populated in the source data. Requesting clarification from the source system on whether countyCode is expected to be provided for all providers. If the field is optional for certain provider types, please provide the business rules so the DQ rule can be refined accordingly. Otherwise, an upstream correction is needed to ensure countyCode is populated with a valid 5‑digit numeric code.'
+WHERE field_name = 'countyCode';
+
+UPDATE dq_rule_summary
+SET data_steward_comment = 
+
+'Business specification states that vbpAdjustment must be left blank when vbpParticipantIndicator is blank, but does not explicitly require vbpAdjustment to be populated whenever the indicator is populated. Current rule enforces vbpAdjustment as mandatory for all non‑blank indicators, causing potential false positives. Rule should be refined to (1) disallow vbpAdjustment when the indicator is blank, and (2) validate vbpAdjustment as numeric and ≥ 0 only when it is populated.'
+
+WHERE field_name = 'vbpAdjustment';
+
+
+UPDATE dq_rule_summary
+SET data_steward_comment = 
+
+'The rule requires bedSize to be a non‑null numeric value greater than zero, representing the number of adult and pediatric beds available for inpatient lodging. Current run shows 13,062 records with a value of 0 and 210 records with NULL, totaling 13,272 invalid entries. This indicates that bedSize is not being consistently populated in the source system. Requesting clarification on whether bedSize is expected for all providers and, if so, an upstream correction to ensure valid positive bed counts are supplied. If certain provider types legitimately have no inpatient beds, business rules are needed to refine the DQ rule accordingly.'
+
+WHERE field_name = 'bedSize';
+
+
+
+UPDATE dq_rule_summary
+SET data_steward_comment = 
+
+'The rule requires costOfLivingAdjustment to be exactly 1.000 for all hospitals except those in Alaska and Hawaii. This dataset contains no AK or HI providers; therefore all values should be 1.000. Current run shows 7,116 invalid records with values 0.0000, 0.0010, and 0.1000, indicating incorrect or missing COLA population in the source system. Requesting clarification from the source on how COLA is derived and whether these values reflect defaulting, mapping issues, or legacy data. Upstream correction or rule‑specific business guidance is required.'
+WHERE field_name = 'costOfLivingAdjustment';
+
+
+
+
+

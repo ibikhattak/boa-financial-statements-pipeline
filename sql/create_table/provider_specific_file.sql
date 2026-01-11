@@ -3,10 +3,12 @@ GO
 
 CREATE TABLE provider_specific_file (
     providerCcn VARCHAR(13),
-    effectiveDate VARCHAR(8),
-    fiscalYearBeginDate VARCHAR(8),
-    exportDate VARCHAR(8),
-    terminationDate VARCHAR(8),
+
+    -- Converted to DATE
+    effectiveDate DATE,
+    fiscalYearBeginDate DATE,
+    exportDate DATE,
+    terminationDate DATE,
 
     waiverIndicator CHAR(1),
     intermediaryNumber VARCHAR(10),
@@ -35,7 +37,9 @@ CREATE TABLE provider_specific_file (
     specialProviderUpdateFactor DECIMAL(18,4),
     operatingDsh DECIMAL(18,4),
 
-    fiscalYearEndDate VARCHAR(8),
+    -- Converted to DATE
+    fiscalYearEndDate DATE,
+
     specialPaymentIndicator VARCHAR(5),
     hospitalQualityIndicator VARCHAR(5),
 
@@ -84,7 +88,9 @@ CREATE TABLE provider_specific_file (
 
     passThroughAmountForAllogenicStemCellAcquisition DECIMAL(18,4),
     ppsBlendYearIndicator VARCHAR(4),
-    lastUpdated VARCHAR(10),
+
+    -- Converted to DATE
+    lastUpdated DATE,
 
     passThroughAmountForDirectGraduateMedicalEducation DECIMAL(18,4),
     passThroughAmountForKidneyAcquisition DECIMAL(18,4),

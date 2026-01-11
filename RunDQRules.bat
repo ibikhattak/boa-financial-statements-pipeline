@@ -1,0 +1,1 @@
+sqlcmd -S localhost\SQLEXPRESS -d CMS_PDS_DATA -Q "EXEC run_dq_rules;" -E

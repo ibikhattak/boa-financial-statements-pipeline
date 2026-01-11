@@ -1,0 +1,56 @@
+--This document is generated to display the structure of dq_rules table, where all the rules are inserted
+--If new rule are inserted they can be manually perform using this sample, 
+--I have created all pre-defined DQ rules for this project which can be directly imported to SQL
+
+INSERT INTO dq_rules (
+    field_name,
+    rule_description,
+    rule_sql,
+    severity,
+    active_flag,
+    rule_name
+)
+VALUES (
+    'providerCcn',
+    'providerCcn must be alphanumeric and length 6–13',
+    '
+    -- Insert summary
+    INSERT INTO dq_rule_summary (
+        run_id, rule_id, rule_name, field_name, failure_count
+    )
+    SELECT
+        {run_id}, {rule_id},
+        ''Provider CCN Format Check'',
+        ''providerCcn'',
+        COUNT(*)
+    FROM provider_specific_file
+    WHERE
+        providerCcn IS NULL
+        OR LTRIM(RTRIM(providerCcn)) = ''''
+        OR providerCcn NOT LIKE ''%[0-9A-Za-z]%''
+        OR LEN(LTRIM(RTRIM(providerCcn))) < 6
+        OR LEN(LTRIM(RTRIM(providerCcn))) > 13;
+
+    -- Insert detailed failures
+    INSERT INTO dq_results (
+        run_id, rule_id,
+        providerCcn, nationalProviderIdentifier, effectiveDate,
+        field_name, invalid_value, failure_detail
+    )
+    SELECT
+        {run_id}, {rule_id},
+        providerCcn, nationalProviderIdentifier, effectiveDate,
+        ''providerCcn'', providerCcn,
+        ''Invalid providerCcn: must be alphanumeric and length 6–13''
+    FROM provider_specific_file
+    WHERE
+        providerCcn IS NULL
+        OR LTRIM(RTRIM(providerCcn)) = ''''
+        OR providerCcn NOT LIKE ''%[0-9A-Za-z]%''
+        OR LEN(LTRIM(RTRIM(providerCcn))) < 6
+        OR LEN(LTRIM(RTRIM(providerCcn))) > 13;
+    ',
+    1,
+    1,
+    'Provider CCN Format Check'
+);

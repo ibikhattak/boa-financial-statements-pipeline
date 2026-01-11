@@ -1,0 +1,13 @@
+Use SQL Server Agent.
+Steps:
+1. Open SQL Server Management Studio
+2. SQL Server Agent → Jobs → New Job
+3. Add a Step:
+	- Type: T‑SQL
+	- Command: EXEC run_dq_rules;
+4. Add a Schedule:
+	- Recurs daily
+	- Time: 5:00 AM
+- Enable job
+
+Now DQ rules will run automatically every morning
